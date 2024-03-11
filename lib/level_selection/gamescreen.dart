@@ -42,23 +42,35 @@ class EndlessRunnerGame extends StatelessWidget {
                   children: [
                     // Start button
                     ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blueGrey)
+                      ),
                       onPressed: () {
                      Navigator.push(context, MaterialPageRoute(builder:(_)=>MyHomePage ()));
                       },
-                      child: Text('Start'),
+                      child: Text('Start',style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                      ),),
                     ),
-                    MyButton(
+                    SizedBox(height: 10,),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.blueGrey)
+                      ),
+                      
                       onPressed: () {
-                        // Set preferred orientation to portrait mode
+ // Set preferred orientation to portrait mode
                         SystemChrome.setPreferredOrientations([
                           DeviceOrientation.portraitUp,
                           DeviceOrientation.portraitDown,
-                        ]);
-                        // Navigate back to the main menu
-                        GoRouter.of(context).go('/');
-                      },
-                      child: const Text('Back'),
+                        ]);                      },
+                      child: Text('Back',style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                      ),),
                     ),
+                    
                   ],
                 ),
               ),

@@ -8,21 +8,10 @@ import 'sprite.dart';
 
 List<Sprite> cacti = [
   Sprite()
-    ..imagePath = "assets/images/whip/whip.png"
-    ..imageWidth = 70
-    ..imageHeight = 110,
-  Sprite()
-    ..imagePath = "assets/images/whip/whip.png"
-    ..imageWidth = 70
-    ..imageHeight = 110,
-  Sprite()
-    ..imagePath = "assets/images/whip/whip.png"
-    ..imageWidth = 70
-    ..imageHeight = 110,
-  Sprite()
-    ..imagePath = "assets/images/bawang/bawang.png"
-    ..imageWidth = 80
-    ..imageHeight = 60,
+    ..imagePath = "assets/images/krus.png"
+    ..imageWidth = 47
+    ..imageHeight = 80,
+
   Sprite()
     ..imagePath = "assets/images/bawang/bawang.png"
     ..imageWidth = 80

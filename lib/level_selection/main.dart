@@ -86,37 +86,37 @@ class _MyHomePageState extends State<MyHomePage>
       dino.die();
     });
   }
+void _newGame() {
+  setState(() {
+    highScore = max(highScore, runDistance.toInt());
+    runDistance = 0;
+    runVelocity = initialVelocity; // Reset dino's velocity
+    dino.state = DinoState.running;
+    dino.dispY = 0;
+    worldController.reset();
+    cacti = [
+      Cactus(worldLocation: const Offset(200, 0)),
+      Cactus(worldLocation: const Offset(300, 0)),
+      Cactus(worldLocation: const Offset(450, 0)),
+    ];
 
-  void _newGame() {
-    setState(() {
-      highScore = max(highScore, runDistance.toInt());
-      runDistance = 0;
-      runVelocity = initialVelocity;
-      dino.state = DinoState.running;
-      dino.dispY = 0;
-      worldController.reset();
-      cacti = [
-        Cactus(worldLocation: const Offset(200, 0)),
-        Cactus(worldLocation: const Offset(300, 0)),
-        Cactus(worldLocation: const Offset(450, 0)),
-      ];
+    ground = [
+      Ground(worldLocation: const Offset(0, 0)),
+      Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 0))
+    ];
 
-      ground = [
-        Ground(worldLocation: const Offset(0, 0)),
-        Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 0))
-      ];
+    clouds = [
+      Cloud(worldLocation: const Offset(100, 20)),
+      Cloud(worldLocation: const Offset(200, 10)),
+      Cloud(worldLocation: const Offset(350, -15)),
+      Cloud(worldLocation: const Offset(500, 10)),
+      Cloud(worldLocation: const Offset(550, -10)),
+    ];
 
-      clouds = [
-        Cloud(worldLocation: const Offset(100, 20)),
-        Cloud(worldLocation: const Offset(200, 10)),
-        Cloud(worldLocation: const Offset(350, -15)),
-        Cloud(worldLocation: const Offset(500, 10)),
-        Cloud(worldLocation: const Offset(550, -10)),
-      ];
+    worldController.forward();
+  });
+}
 
-      worldController.forward();
-    });
-  }
 
   _update() {
     try {
@@ -147,12 +147,19 @@ class _MyHomePageState extends State<MyHomePage>
         if (obstacleRect.right < 0) {
           setState(() {
             cacti.remove(cactus);
-            cacti.add(Cactus(
-                worldLocation: Offset(
-                    runDistance +
-                        Random().nextInt(100) +
-                        MediaQuery.of(context).size.width / worlToPixelRatio,
-                    0)));
+            // Remove the loop that adds multiple cacti
+cacti.add(
+  Cactus(
+    worldLocation: Offset(
+      runDistance +
+          MediaQuery.of(context).size.width / worlToPixelRatio +
+          Random().nextInt(500) +  // Add random distance between obstacles
+          100, // Minimum distance between obstacles
+      0,
+    ),
+  ),
+);
+
           });
         }
       }
@@ -238,14 +245,14 @@ class _MyHomePageState extends State<MyHomePage>
             : Colors.black,
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-          onTap: () {
-            if (dino.state != DinoState.dead) {
-              dino.jump();
-            }
-            if (dino.state == DinoState.dead) {
-              _newGame();
-            }
-          },
+        onTap: () {
+    if (dino.state == DinoState.running) { // Check if the dino is alive
+      dino.jump();
+    }
+    if (dino.state == DinoState.dead) {
+      _newGame();
+    }
+  },
           child: Stack(
             alignment: Alignment.center,
             children: [

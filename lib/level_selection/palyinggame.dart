@@ -15,7 +15,7 @@ class MainMenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dino Game',
+      title: 'Aswang Chronicles',
       home: Scaffold(
         appBar: AppBar(
           title: Text('Main Menu'),
@@ -60,28 +60,28 @@ class _DinoGameState extends State<DinoGame> {
     _timer = Timer.periodic(Duration(milliseconds: 400), (timer) {
       setState(() {
         // Logic for obstacle spawning
-        _spawnObstacle();
-        // Check if the dino collides with the obstacle
-        if (_obstacleX < 100 && _dinoY > 150) {
-          _gameOver = true;
-          _timer.cancel();
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text('Game Over'),
-              content: Text('You collided with an obstacle!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context); // Go back to main menu
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
-        }
+        // // _spawnObstacle();
+        // // Check if the dino collides with the obstacle
+        // if (_obstacleX < 100 && _dinoY > 150) {
+        //   _gameOver = true;
+        //   _timer.cancel();
+        //   showDialog(
+        //     context: context,
+        //     builder: (_) => AlertDialog(
+        //       title: Text('Game Over'),
+        //       content: Text('You collided with an obstacle!'),
+        //       actions: [
+        //         TextButton(
+        //           onPressed: () {
+        //             Navigator.pop(context);
+        //             Navigator.pop(context); // Go back to main menu
+        //           },
+        //           child: Text('OK'),
+        //         ),
+        //       ],
+        //     ),
+        //   );
+        // }
         // Check if the dino is out of bounds
         if (_dinoY >= 200) {
           _gameOver = true;
@@ -107,18 +107,6 @@ class _DinoGameState extends State<DinoGame> {
     });
   }
 
-  void _spawnObstacle() {
-    // Define the default distances between obstacles
-    double defaultMinDistance = 600.0;
-    double defaultMaxDistance = 600.0;
-
-    // Calculate the position of the new obstacle
-    double newObstacleX = _previousObstacleX + defaultMinDistance;
-
-    // Update the position of the obstacle
-    _previousObstacleX = newObstacleX;
-    _obstacleX = newObstacleX;
-  }
 
   void _jump() {
     setState(() {
