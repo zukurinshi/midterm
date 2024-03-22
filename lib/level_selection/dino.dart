@@ -1,28 +1,32 @@
+import 'package:basic/audio/sounds.dart';
+import 'package:basic/audio/audio_controller.dart';
+import 'package:basic/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'constants.dart';
 import 'game_object.dart';
 import 'sprite.dart';
 
+
 List<Sprite> dino = [
   Sprite()
-    ..imagePath = "assets/images/dino/dino_1.png"
+    ..imagePath = "assets/images/dino/walk_1.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "assets/images/dino/dino_2.png"
+    ..imagePath = "assets/images/dino/walk_2.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "assets/images/dino/dino_3.png"
+    ..imagePath = "assets/images/dino/walk_3.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "assets/images/dino/dino_4.png"
+    ..imagePath = "assets/images/dino/walk_4.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
-    ..imagePath = "assets/images/dino/dino_5.png"
+    ..imagePath = "assets/images/dino/death_1.png"
     ..imageWidth = 88
     ..imageHeight = 94,
   Sprite()
@@ -38,7 +42,8 @@ enum DinoState {
 }
 
 class Dino extends GameObject {
-  Sprite currentSprite = dino[0];
+   final AudioController audioController = AudioController();
+  Sprite currentSprite = dino[1];
   double dispY = 0;
   double velY = 0;
   DinoState state = DinoState.running;
@@ -51,8 +56,9 @@ class Dino extends GameObject {
   @override
   Rect getRect(Size screenSize, double runDistance) {
     return Rect.fromLTWH(
+      
       screenSize.width / 10,
-      screenSize.height / 1.75 - currentSprite.imageHeight - dispY,
+      screenSize.height / 1.65 - currentSprite.imageHeight - dispY,
       currentSprite.imageWidth.toDouble(),
       currentSprite.imageHeight.toDouble(),
     );
@@ -64,7 +70,7 @@ class Dino extends GameObject {
     try {
       currentSprite = dino[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2];
     } catch (_) {
-      currentSprite = dino[0];
+      currentSprite = dino[1];
     }
     try{
       elapsedTimeSeconds = (elapsedTime! - lastUpdate).inMilliseconds / 1000;
@@ -88,11 +94,12 @@ class Dino extends GameObject {
     if (state != DinoState.jumping) {
       state = DinoState.jumping;
       velY = jumpVelocity;
+      audioController.playSfx(SfxType.jump);
     }
   }
 
   void die() {
-    currentSprite = dino[5];
+    currentSprite = dino[4];
     state = DinoState.dead;
   }
 }

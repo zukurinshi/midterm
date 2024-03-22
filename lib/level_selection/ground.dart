@@ -5,7 +5,7 @@ import 'game_object.dart';
 import 'sprite.dart';
 
 Sprite groundSprite = Sprite()
-  ..imagePath = "assets/images/ground.png"
+  ..imagePath = "assets/images/ground_new2.png"
   ..imageWidth = 2399
   ..imageHeight = 24;
 
@@ -18,7 +18,7 @@ class Ground extends GameObject {
   Rect getRect(Size screenSize, double runDistance) {
     return Rect.fromLTWH(
       (worldLocation.dx - runDistance) * worlToPixelRatio,
-      screenSize.height / 1.75 - groundSprite.imageHeight,
+      screenSize.height / 1.68 - groundSprite.imageHeight,
       groundSprite.imageWidth.toDouble(),
       groundSprite.imageHeight.toDouble(),
     );

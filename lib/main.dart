@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
 
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
-            title: 'title',
+            title: 'Aswang Chronicles',
             theme: ThemeData.from(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: palette.darkPen,

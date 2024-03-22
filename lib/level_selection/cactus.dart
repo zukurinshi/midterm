@@ -8,9 +8,9 @@ import 'sprite.dart';
 
 List<Sprite> cacti = [
   Sprite()
-    ..imagePath = "assets/images/krus.png"
-    ..imageWidth = 47
-    ..imageHeight = 80,
+    ..imagePath = "assets/images/cross_1.png"
+    ..imageWidth = 55
+    ..imageHeight = 60,
 
   Sprite()
     ..imagePath = "assets/images/bawang/bawang.png"
@@ -29,7 +29,7 @@ class Cactus extends GameObject {
   Rect getRect(Size screenSize, double runDistance) {
     return Rect.fromLTWH(
       (worldLocation.dx - runDistance) * worlToPixelRatio,
-      screenSize.height / 1.75 - sprite.imageHeight,
+      screenSize.height / 1.73 - sprite.imageHeight,
       sprite.imageWidth.toDouble(),
       sprite.imageHeight.toDouble(),
     );

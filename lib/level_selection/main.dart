@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:basic/level_selection/gamescreen.dart';
+import 'package:basic/level_selection/ptera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
     ]);
     return const MaterialApp(
-      title: 'Flutter Dino',
+      title: 'Aswang Chronicles',
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
     );
@@ -57,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage>
   late AnimationController worldController;
   Duration lastUpdateCall = const Duration();
 
-  List<Cactus> cacti = [Cactus(worldLocation: const Offset(200, 0))];
+  List<Cactus> cacti = [Cactus(worldLocation: const Offset(200, 10))];
 
   List<Ground> ground = [
     Ground(worldLocation: const Offset(0, 0)),
@@ -68,6 +69,10 @@ class _MyHomePageState extends State<MyHomePage>
     Cloud(worldLocation: const Offset(100, 20)),
     Cloud(worldLocation: const Offset(200, 10)),
     Cloud(worldLocation: const Offset(350, -10)),
+  ];
+
+  List<Ptera> pteraFrames = [
+    Ptera(worldLocation: const Offset(200, 0)),
   ];
 
   @override
@@ -86,37 +91,43 @@ class _MyHomePageState extends State<MyHomePage>
       dino.die();
     });
   }
-void _newGame() {
-  setState(() {
-    highScore = max(highScore, runDistance.toInt());
-    runDistance = 0;
-    runVelocity = initialVelocity; // Reset dino's velocity
-    dino.state = DinoState.running;
-    dino.dispY = 0;
-    worldController.reset();
-    cacti = [
-      Cactus(worldLocation: const Offset(200, 0)),
-      Cactus(worldLocation: const Offset(300, 0)),
-      Cactus(worldLocation: const Offset(450, 0)),
-    ];
 
-    ground = [
-      Ground(worldLocation: const Offset(0, 0)),
-      Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 0))
-    ];
+  void _newGame() {
+    setState(() {
+      highScore = max(highScore, runDistance.toInt());
+      runDistance = 0;
+      runVelocity = initialVelocity; // Reset dino's velocity
+      dino.state = DinoState.running;
+      dino.dispY = 0;
+      worldController.reset();
+      cacti = [
+        Cactus(worldLocation: const Offset(200, 0)),
+        Cactus(worldLocation: const Offset(300, 0)),
+        Cactus(worldLocation: const Offset(450, 0)),
+      ];
 
-    clouds = [
-      Cloud(worldLocation: const Offset(100, 20)),
-      Cloud(worldLocation: const Offset(200, 10)),
-      Cloud(worldLocation: const Offset(350, -15)),
-      Cloud(worldLocation: const Offset(500, 10)),
-      Cloud(worldLocation: const Offset(550, -10)),
-    ];
+      ground = [
+        Ground(worldLocation: const Offset(0, 0)),
+        Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 110))
+      ];
 
-    worldController.forward();
-  });
-}
+      clouds = [
+        Cloud(worldLocation: const Offset(100, 20)),
+        Cloud(worldLocation: const Offset(200, 10)),
+        Cloud(worldLocation: const Offset(350, -15)),
+        Cloud(worldLocation: const Offset(500, 10)),
+        Cloud(worldLocation: const Offset(550, -10)),
+      ];
 
+      pteraFrames = [
+        Ptera(worldLocation: const Offset(200, 0)),
+        Ptera(worldLocation: const Offset(300, 0)),
+        Ptera(worldLocation: const Offset(450, 0)),
+      ];
+
+      worldController.forward();
+    });
+  }
 
   _update() {
     try {
@@ -148,21 +159,22 @@ void _newGame() {
           setState(() {
             cacti.remove(cactus);
             // Remove the loop that adds multiple cacti
-cacti.add(
-  Cactus(
-    worldLocation: Offset(
-      runDistance +
-          MediaQuery.of(context).size.width / worlToPixelRatio +
-          Random().nextInt(500) +  // Add random distance between obstacles
-          100, // Minimum distance between obstacles
-      0,
-    ),
-  ),
-);
-
+            cacti.add(
+              Cactus(
+                worldLocation: Offset(
+                  runDistance +
+                      MediaQuery.of(context).size.width / worlToPixelRatio +
+                      Random().nextInt(
+                          500) + // Add random distance between obstacles
+                      100, // Minimum distance between obstacles
+                  0,
+                ),
+              ),
+            );
           });
         }
       }
+    
 
       for (Ground groundlet in ground) {
         if (groundlet.getRect(screenSize, runDistance).right < 0) {
@@ -236,23 +248,23 @@ cacti.add(
         ),
       );
     }
-
     return Scaffold(
       body: AnimatedContainer(
         duration: const Duration(milliseconds: 5000),
         color: (runDistance ~/ dayNightOffest) % 2 == 0
             ? Colors.white
-            : Colors.black,
+            : Color.fromARGB(255, 39, 41, 54),
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
-        onTap: () {
-    if (dino.state == DinoState.running) { // Check if the dino is alive
-      dino.jump();
-    }
-    if (dino.state == DinoState.dead) {
-      _newGame();
-    }
-  },
+          onTap: () {
+            if (dino.state == DinoState.running) {
+              // Check if the dino is alive
+              dino.jump();
+            }
+            if (dino.state == DinoState.dead) {
+              _newGame();
+            }
+          },
           child: Stack(
             alignment: Alignment.center,
             children: [
