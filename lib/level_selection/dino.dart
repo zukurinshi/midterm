@@ -43,6 +43,8 @@ enum DinoState {
 
 class Dino extends GameObject {
    final AudioController audioController = AudioController();
+   final SettingsController settingsController;
+    Dino(this.settingsController);
   Sprite currentSprite = dino[1];
   double dispY = 0;
   double velY = 0;
@@ -94,12 +96,16 @@ class Dino extends GameObject {
     if (state != DinoState.jumping) {
       state = DinoState.jumping;
       velY = jumpVelocity;
-      audioController.playSfx(SfxType.jump);
+         if (settingsController.audioOn.value) {
+        audioController.playSfx(SfxType.jump);
+      }
     }
+    
   }
 
   void die() {
     currentSprite = dino[4];
     state = DinoState.dead;
+    
   }
 }

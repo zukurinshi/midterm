@@ -5,16 +5,16 @@ import 'package:provider/provider.dart';
 import '../audio/audio_controller.dart';
 import '../audio/sounds.dart';
 import '../settings/settings.dart';
-import '../style/my_button.dart';
+
 import '../style/palette.dart';
-import '../style/responsive_screen.dart';
+
 
 class MainMenuScreen extends StatelessWidget {
   const MainMenuScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final palette = context.watch<Palette>();
+    // final palette = context.watch<Palette>();
     final settingsController = context.watch<SettingsController>();
     final audioController = context.watch<AudioController>();
 
@@ -22,7 +22,8 @@ class MainMenuScreen extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/images/frontbg.jpg'), // Replace 'assets/background.jpg' with your image path
+            image: AssetImage(
+                'assets/images/frontbg.jpg'), // Replace 'assets/background.jpg' with your image path
             fit: BoxFit.cover,
           ),
         ),
@@ -39,31 +40,37 @@ class MainMenuScreen extends StatelessWidget {
                     fontFamily: 'Permanent Marker',
                     fontSize: 55,
                     height: 1,
-                    color: Colors.white, // Adjust the text color to match your background
+                    color: Colors
+                        .white, // Adjust the text color to match your background
                   ),
                 ),
               ),
             ),
             SizedBox(height: 100),
             ElevatedButton(
-                  style: ButtonStyle(backgroundColor: MaterialStatePropertyAll( Colors.blueGrey)),
-              onPressed: (){
-                audioController.playSfx(SfxType.buttonTap);
-                GoRouter.of(context).go('/play');
-            }, child: const Text('Maglaro'  ,style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold
-              ),)
-         ),
-           SizedBox(height: 10),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blueGrey)),
+                onPressed: () {
+                  if (settingsController.audioOn.value) {
+                    audioController.playSfx(SfxType.buttonTap);
+                  }
+                  GoRouter.of(context).go('/play');
+                },
+                child: const Text(
+                  'Maglaro',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                )),
+            SizedBox(height: 10),
             ElevatedButton(
-              style: ButtonStyle(backgroundColor: MaterialStatePropertyAll( Colors.blueGrey)),
-              onPressed: () => GoRouter.of(context).push('/settings'), child: const Text('Kaukulang Paggayos',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold
-              ),))
-         ,
+                style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.blueGrey)),
+                onPressed: () => GoRouter.of(context).push('/settings'),
+                child: const Text(
+                  'Kaukulang Paggayos',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
+                )),
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(top: 32),
@@ -71,9 +78,21 @@ class MainMenuScreen extends StatelessWidget {
                 valueListenable: settingsController.audioOn,
                 builder: (context, audioOn, child) {
                   return IconButton(
-                    onPressed: () => settingsController.toggleAudioOn(),
-                    icon: Icon(audioOn ? Icons.volume_up : Icons.volume_off),
-                    color: Colors.white, // Adjust the icon color to match your background
+                    onPressed: () {
+                      settingsController.toggleSoundsOn();
+                      if (settingsController.audioOn.value) {
+                        audioController.playSfx(SfxType.buttonTap);
+                      }
+                    },
+                    icon: ValueListenableBuilder<bool>(
+                      valueListenable: settingsController.soundsOn,
+                      builder: (context, soundsOn, child) {
+                        return Icon(
+                          soundsOn ? Icons.volume_up : Icons.volume_off,
+                          color: Colors.white,
+                        );
+                      },
+                    ),
                   );
                 },
               ),
@@ -81,7 +100,9 @@ class MainMenuScreen extends StatelessWidget {
             SizedBox(height: 10),
             const Text(
               'Version by: Flor Ristagno',
-              style: TextStyle(color: Colors.white), // Adjust the text color to match your background
+              style: TextStyle(
+                  color: Colors
+                      .white), // Adjust the text color to match your background
             ),
           ],
         ),

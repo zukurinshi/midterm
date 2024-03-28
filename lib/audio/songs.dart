@@ -9,9 +9,8 @@ const Set<Song> songs = {
     // Song('ili.mp3', 'ILI ILI TULOG ANAY', artist: 'Flor Ristagno'),
     Song('misty_cave.mp3', 'MISTY CAVE', artist: ''),
     Song('nameless.mp3', 'NAMELESS', artist: ''),
-    Song('other_worldly_buddy.mp3', 'OTHER WORLDLY BUDDY', artist: ''),
-    Song('phobia.mp3', 'PHOBIA', artist: ''),
-    Song('wandering_darkness.mp3', 'WANDERING DARKNESS', artist: ''),
+    Song('creepy_tower.mp3', 'OTHER WORLDLY BUDDY', artist: ''),
+    Song('after_dark.mp3', 'WANDERING DARKNESS', artist: ''),
 
 
 };

@@ -74,3 +74,4 @@ double soundTypeToVolume(SfxType type) {
 }
 
 enum SfxType { huhsh, wssh, buttonTap, congrats, erase, swishSwish, jump, die }
+

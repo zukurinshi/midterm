@@ -2,7 +2,9 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:basic/audio/sounds.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 import 'persistence/local_storage_settings_persistence.dart';
@@ -14,7 +16,7 @@ class SettingsController {
   static final _log = Logger('SettingsController');
 
   /// The persistence store that is used to save settings.
-  final SettingsPersistence _store;
+  late final SettingsPersistence _store;
 
   /// Whether or not the audio is on at all. This overrides both music
   /// and sounds (sfx).
@@ -43,7 +45,11 @@ class SettingsController {
   SettingsController({SettingsPersistence? store})
       : _store = store ?? LocalStorageSettingsPersistence() {
     _loadStateFromPersistence();
+     audioOn.addListener(() {
+      _log.fine('audioOn value changed: ${audioOn.value}');
+    });
   }
+    
 
   void setPlayerName(String name) {
     playerName.value = name;
@@ -60,10 +66,10 @@ class SettingsController {
     _store.saveMusicOn(musicOn.value);
   }
 
-  void toggleSoundsOn() {
-    soundsOn.value = !soundsOn.value;
-    _store.saveSoundsOn(soundsOn.value);
-  }
+void toggleSoundsOn() {
+  soundsOn.value = !soundsOn.value;
+  _store.saveSoundsOn(soundsOn.value);
+}
 
   /// Asynchronously loads values from the injected persistence store.
   Future<void> _loadStateFromPersistence() async {
@@ -87,5 +93,35 @@ class SettingsController {
     ]);
 
     _log.fine(() => 'Loaded settings: $loadedValues');
+  }
+
+    bool isSoundTypeMuted(SfxType type) {
+    // Implement your logic here to determine if the given sound type is muted
+    // For example:
+    switch (type) {
+      case SfxType.jump:
+        return !soundsOn.value; // Assume jump sound is muted if sounds are off
+      // Add cases for other sound types if needed
+      default:
+        return false; // By default, assume sound type is not muted
+    }
+  }
+}
+
+  class SoundSettingsWidget extends StatelessWidget {
+  final SettingsController settingsController;
+
+  const SoundSettingsWidget({Key? key, required this.settingsController})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SwitchListTile(
+      title: Text('Sounds'),
+      value: settingsController.soundsOn.value,
+      onChanged: (enabled) {
+        settingsController.toggleSoundsOn();
+      },
+    );
   }
 }
