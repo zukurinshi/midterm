@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage>
     setState(() {
       highScore = max(highScore, runDistance.toInt());
       runDistance = 0;
-      runVelocity = initialVelocity; // Reset dino's velocity
+      runVelocity = initialVelocity;
       dino.state = DinoState.running;
       dino.dispY = 0;
       worldController.reset();
@@ -259,11 +259,6 @@ class _MyHomePageState extends State<MyHomePage>
     }
     return Scaffold(
       body: Container(
-         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bg1_day.png'), 
-            fit: BoxFit.cover,
-          )),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 800),
           color: (runDistance ~/ dayNightOffest) % 2 == 0

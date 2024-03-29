@@ -7,7 +7,6 @@ import 'constants.dart';
 import 'game_object.dart';
 import 'sprite.dart';
 
-
 List<Sprite> dino = [
   Sprite()
     ..imagePath = "assets/images/dino/walk_1.png"
@@ -35,6 +34,21 @@ List<Sprite> dino = [
     ..imageHeight = 94,
 ];
 
+List<Sprite> dinoNight = [
+  Sprite()
+    ..imagePath = "assets/images/dino/fly1.png"
+    ..imageWidth = 88
+    ..imageHeight = 94,
+  Sprite()
+    ..imagePath = "assets/images/dino/fly2.png"
+    ..imageWidth = 88
+    ..imageHeight = 94,
+  Sprite()
+    ..imagePath = "assets/images/dino/fly3.png"
+    ..imageWidth = 88
+    ..imageHeight = 94,
+];
+
 enum DinoState {
   jumping,
   running,
@@ -42,10 +56,14 @@ enum DinoState {
 }
 
 class Dino extends GameObject {
-   final AudioController audioController = AudioController();
-   final SettingsController settingsController;
-    Dino(this.settingsController);
-  Sprite currentSprite = dino[1];
+  final AudioController audioController = AudioController();
+  final SettingsController settingsController;
+  double runDistance = 0;
+  double runVelocity = 0; 
+  Dino(this.settingsController);
+  List<Sprite> daySprites = dino;
+  List<Sprite> nightSprites = dinoNight;
+  Sprite currentSprite = dino[0];
   double dispY = 0;
   double velY = 0;
   DinoState state = DinoState.running;
@@ -58,7 +76,6 @@ class Dino extends GameObject {
   @override
   Rect getRect(Size screenSize, double runDistance) {
     return Rect.fromLTWH(
-      
       screenSize.width / 10,
       screenSize.height / 1.65 - currentSprite.imageHeight - dispY,
       currentSprite.imageWidth.toDouble(),
@@ -70,17 +87,24 @@ class Dino extends GameObject {
   void update(Duration lastUpdate, Duration? elapsedTime) {
     double elapsedTimeSeconds;
     try {
-      currentSprite = dino[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2];
+      currentSprite =
+          (daySprites[(elapsedTime!.inMilliseconds / 100).floor() % 2 + 2]);
     } catch (_) {
-      currentSprite = dino[1];
+      // Handle exceptions if needed
     }
-    try{
+    try {
       elapsedTimeSeconds = (elapsedTime! - lastUpdate).inMilliseconds / 1000;
-    }
-    catch(_){
+    } catch (_) {
       elapsedTimeSeconds = 0;
     }
-    
+    runDistance += runVelocity * elapsedTimeSeconds;
+    if ((runDistance ~/ dayNightOffest) % 2 != 0) {
+      currentSprite =
+          nightSprites[(elapsedTime!.inMilliseconds / 100).floor() % 3];
+    } else {
+      currentSprite =
+          daySprites[(elapsedTime!.inMilliseconds / 100).floor() % 4];
+    }
 
     dispY += velY * elapsedTimeSeconds;
     if (dispY <= 0) {
@@ -96,16 +120,14 @@ class Dino extends GameObject {
     if (state != DinoState.jumping) {
       state = DinoState.jumping;
       velY = jumpVelocity;
-         if (settingsController.audioOn.value) {
+      if (settingsController.audioOn.value) {
         audioController.playSfx(SfxType.jump);
       }
     }
-    
   }
 
   void die() {
     currentSprite = dino[4];
     state = DinoState.dead;
-    
   }
 }
