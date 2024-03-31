@@ -116,6 +116,17 @@ class Dino extends GameObject {
     }
   }
 
+void updateSpriteForScore1000() {
+
+    // Change the sprite to a new one when the score reaches 1000
+    currentSprite = Sprite()
+      ..imagePath = "assets/images/dino/pig.gif"
+      ..imageWidth = 88
+      ..imageHeight = 94;
+    
+  
+}
+
   void jump() {
     if (state != DinoState.jumping) {
       state = DinoState.jumping;

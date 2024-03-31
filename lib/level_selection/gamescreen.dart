@@ -68,6 +68,8 @@ class EndlessRunnerGame extends StatelessWidget {
                               MaterialStatePropertyAll(Colors.blueGrey)),
                       onPressed: () {
                         // Set preferred orientation to portrait mode
+                            Navigator.pop(context); // This will pop the current route and go back
+
                         SystemChrome.setPreferredOrientations([
                           DeviceOrientation.portraitUp,
                           DeviceOrientation.portraitDown,

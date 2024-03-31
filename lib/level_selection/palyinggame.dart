@@ -59,54 +59,16 @@ class _DinoGameState extends State<DinoGame> {
   void _startGame() {
     _timer = Timer.periodic(Duration(milliseconds: 400), (timer) {
       setState(() {
-        // Logic for obstacle spawning
-        // // _spawnObstacle();
-        // // Check if the dino collides with the obstacle
-        // if (_obstacleX < 100 && _dinoY > 150) {
-        //   _gameOver = true;
-        //   _timer.cancel();
-        //   showDialog(
-        //     context: context,
-        //     builder: (_) => AlertDialog(
-        //       title: Text('Game Over'),
-        //       content: Text('You collided with an obstacle!'),
-        //       actions: [
-        //         TextButton(
-        //           onPressed: () {
-        //             Navigator.pop(context);
-        //             Navigator.pop(context); // Go back to main menu
-        //           },
-        //           child: Text('OK'),
-        //         ),
-        //       ],
-        //     ),
-        //   );
-        // }
-        // Check if the dino is out of bounds
-        if (_dinoY >= 200) {
-          _gameOver = true;
-          _timer.cancel();
-          showDialog(
-            context: context,
-            builder: (_) => AlertDialog(
-              title: Text('Game Over'),
-              content: Text('Your dino is out of bounds!'),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context); // Go back to main menu
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          );
+        // Reset the dino's vertical velocity when the game starts again
+        if (_dinoY == 0) {
+          _dinoYVelocity = 0;
         }
+        
+        // Logic for obstacle spawning and game over condition
+        
       });
     });
   }
-
 
   void _jump() {
     setState(() {

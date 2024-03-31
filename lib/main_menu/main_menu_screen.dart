@@ -72,34 +72,10 @@ class MainMenuScreen extends StatelessWidget {
                       color: Colors.white, fontWeight: FontWeight.bold),
                 )),
             SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(top: 32),
-              child: ValueListenableBuilder<bool>(
-                valueListenable: settingsController.audioOn,
-                builder: (context, audioOn, child) {
-                  return IconButton(
-                    onPressed: () {
-                      settingsController.toggleSoundsOn();
-                      if (settingsController.audioOn.value) {
-                        audioController.playSfx(SfxType.buttonTap);
-                      }
-                    },
-                    icon: ValueListenableBuilder<bool>(
-                      valueListenable: settingsController.soundsOn,
-                      builder: (context, soundsOn, child) {
-                        return Icon(
-                          soundsOn ? Icons.volume_up : Icons.volume_off,
-                          color: Colors.white,
-                        );
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+            
             SizedBox(height: 10),
             const Text(
-              'Version by: Flor Ristagno',
+              'Developed by: Flor Ristagno',
               style: TextStyle(
                   color: Colors
                       .white), // Adjust the text color to match your background

@@ -1,9 +1,12 @@
 import 'dart:math';
 import 'package:basic/audio/audio_controller.dart';
+import 'package:basic/level_selection/highscore.dart';
 import 'package:basic/level_selection/ptera.dart';
 import 'package:basic/settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'cactus.dart';
 import 'cloud.dart';
 import 'dino.dart';
@@ -11,9 +14,12 @@ import 'game_object.dart';
 import 'ground.dart';
 import 'constants.dart';
 import 'package:google_fonts/google_fonts.dart';
+  double runDistance = 0;
+late Box<HighScore> highScoreBox; // Declare the box with the correct type
 
-void main() {
-  runApp(const MyApp());
+void main()async {
+
+    runApp(const MyApp());
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 }
 
@@ -34,7 +40,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class MyHomePage extends StatefulWidget {
   final SettingsController settingsController;
   const MyHomePage({Key? key, required this.settingsController})
@@ -47,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   late Dino dino;
   double runVelocity = initialVelocity;
-  double runDistance = 0;
+
   late final AudioController audioController = AudioController();
 
   int highScore = 0;
@@ -90,55 +95,63 @@ class _MyHomePageState extends State<MyHomePage>
     worldController =
         AnimationController(vsync: this, duration: const Duration(days: 99));
     worldController.addListener(_update);
-    // worldController.forward();
     _die();
   }
 
-  void _die() {
-    setState(() {
-      worldController.stop();
-      dino.die();
-    });
-  }
+void _die() {
+  setState(() {
+    worldController.stop();
+    dino.die();
+    HighScore currentHighScore = highScoreBox.get('highScoreKey') ?? HighScore(0);
+    HighScore updatedHighScore = HighScore(max(currentHighScore.score, highScore));
+    highScoreBox.put('highScoreKey', updatedHighScore);
+  });
+}
 
   void _newGame() {
+  setState(() {
+   HighScore currentHighScore = highScoreBox.get('highScoreKey') ?? HighScore(0);
+    highScore = max(currentHighScore.score, runDistance.toInt());
+    runDistance = 0;
+    runVelocity = 30; // Adjust this value as needed
+    dino.state = DinoState.running;
+    dino.dispY = 0;
+    worldController.reset();
+    cacti = [
+      Cactus(worldLocation: const Offset(200, 0)),
+      Cactus(worldLocation: const Offset(300, 0)),
+      Cactus(worldLocation: const Offset(450, 0)),
+    ];
+
+    ground = [
+      Ground(worldLocation: const Offset(0, 0)),
+      Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 110))
+    ];
+
+    clouds = [
+      Cloud(worldLocation: const Offset(100, 20)),
+      Cloud(worldLocation: const Offset(200, 10)),
+      Cloud(worldLocation: const Offset(350, -15)),
+      Cloud(worldLocation: const Offset(500, 10)),
+      Cloud(worldLocation: const Offset(550, -10)),
+    ];
+
+    pteraFrames = [
+      Ptera(worldLocation: const Offset(200, 0)),
+      Ptera(worldLocation: const Offset(300, 0)),
+      Ptera(worldLocation: const Offset(450, 0)),
+    ];
+
+    worldController.forward();
+  });
+}
+
+  void _update() {
+      if (runDistance.toInt() > highScore) {
     setState(() {
-      highScore = max(highScore, runDistance.toInt());
-      runDistance = 0;
-      runVelocity = initialVelocity;
-      dino.state = DinoState.running;
-      dino.dispY = 0;
-      worldController.reset();
-      cacti = [
-        Cactus(worldLocation: const Offset(200, 0)),
-        Cactus(worldLocation: const Offset(300, 0)),
-        Cactus(worldLocation: const Offset(450, 0)),
-      ];
-
-      ground = [
-        Ground(worldLocation: const Offset(0, 0)),
-        Ground(worldLocation: Offset(groundSprite.imageWidth / 10, 110))
-      ];
-
-      clouds = [
-        Cloud(worldLocation: const Offset(100, 20)),
-        Cloud(worldLocation: const Offset(200, 10)),
-        Cloud(worldLocation: const Offset(350, -15)),
-        Cloud(worldLocation: const Offset(500, 10)),
-        Cloud(worldLocation: const Offset(550, -10)),
-      ];
-
-      pteraFrames = [
-        Ptera(worldLocation: const Offset(200, 0)),
-        Ptera(worldLocation: const Offset(300, 0)),
-        Ptera(worldLocation: const Offset(450, 0)),
-      ];
-
-      worldController.forward();
+      highScore = runDistance.toInt();
     });
   }
-
-  _update() {
     try {
       double elapsedTimeSeconds;
       dino.update(lastUpdateCall, worldController.lastElapsedDuration);
@@ -160,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage>
       Rect dinoRect = dino.getRect(screenSize, runDistance);
       for (Cactus cactus in cacti) {
         Rect obstacleRect = cactus.getRect(screenSize, runDistance);
-        if (dinoRect.overlaps(obstacleRect.deflate(20))) {
+        if (dinoRect.overlaps(obstacleRect.deflate(30))) {
           _die();
         }
 
@@ -219,6 +232,13 @@ class _MyHomePageState extends State<MyHomePage>
       }
 
       lastUpdateCall = worldController.lastElapsedDuration!;
+
+      // Check if the score reaches 1000 and update Dino sprite
+      if (runDistance >= 500) {
+        setState(() {
+          dino.updateSpriteForScore1000();
+        });
+      }
     } catch (e) {
       //
     }
@@ -261,9 +281,10 @@ class _MyHomePageState extends State<MyHomePage>
       body: Container(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 800),
-          color: (runDistance ~/ dayNightOffest) % 2 == 0
-              ? Colors.white
-              : Color.fromARGB(255, 39, 41, 54),
+        color: runDistance >= 1000 || (runDistance ~/ dayNightOffest) % 2 != 0
+              ?Color.fromARGB(255, 139, 0, 0)
+              : Colors.black,
+
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: () {
@@ -291,7 +312,7 @@ class _MyHomePageState extends State<MyHomePage>
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
                           color: (runDistance ~/ dayNightOffest) % 2 == 0
-                              ? Colors.black
+                              ? Colors.white
                               : Colors.white,
                         ),
                       ),
@@ -311,7 +332,7 @@ class _MyHomePageState extends State<MyHomePage>
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
                           color: (runDistance ~/ dayNightOffest) % 2 == 0
-                              ? Colors.black
+                              ? Colors.white
                               : Colors.white,
                         ),
                       ),
@@ -558,8 +579,11 @@ class _MyHomePageState extends State<MyHomePage>
                       _die();
                     },
                     child: const Text(
-                      "Force Kill Dino",
-                      style: TextStyle(color: Colors.red),
+                      "Patayin ang Aswang",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                     ),
                   ),
                 ),

@@ -5,9 +5,10 @@ import 'game_object.dart';
 import 'sprite.dart';
 
 Sprite cloudSprite = Sprite()
-  ..imagePath = "assets/images/cloud_1.png"
+  ..imagePath = "assets/images/bat.gif"
   ..imageWidth = 150
   ..imageHeight = 85;
+  
 
 class Cloud extends GameObject {
   final Offset worldLocation;

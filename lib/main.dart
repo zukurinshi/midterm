@@ -4,9 +4,13 @@
 
 import 'dart:developer' as dev;
 
+import 'package:basic/level_selection/highscore.dart';
+import 'package:basic/level_selection/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:logging/logging.dart';
 import 'package:provider/provider.dart';
 
@@ -39,6 +43,9 @@ void main() async {
   ]);
 
   runApp(MyApp());
+   await Hive.initFlutter();
+  Hive.registerAdapter(HighScoreAdapter());
+  highScoreBox = await Hive.openBox<HighScore>('highScoresBox'); 
 }
 
 class MyApp extends StatelessWidget {

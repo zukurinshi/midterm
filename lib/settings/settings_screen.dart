@@ -8,7 +8,6 @@ import '../style/palette.dart';
 import '../style/responsive_screen.dart';
 import 'custom_name_dialog.dart';
 import 'settings.dart';
-
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key});
 
@@ -44,23 +43,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               _gap,
               const _NameChangeLine('Name'),
-               SoundSettingsWidget(settingsController: settings),
-                  ValueListenableBuilder<bool>(
-                valueListenable: settings.musicOn,
-                builder: (context, musicOn, child) => _SettingsLine(
-                  'Music',
-                  Icon(musicOn ? Icons.music_note : Icons.music_off, color: Colors.white), // Set icon color to white
-                  onSelected: () => settings.toggleMusicOn(),
-                ),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: settings.soundsOn,
-                builder: (context, soundsOn, child) => _SettingsLine(
-                  'Sound FX',
-                  Icon(soundsOn ? Icons.graphic_eq : Icons.volume_off, color: Colors.white), // Set icon color to white
-                  onSelected: () => settings.toggleSoundsOn(),
-                ),
-              ),
+              SoundSettingsWidget(settingsController: settings),
               ValueListenableBuilder<bool>(
                 valueListenable: settings.musicOn,
                 builder: (context, musicOn, child) => _SettingsLine(
@@ -95,6 +78,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 }
+
 
 class _NameChangeLine extends StatelessWidget {
   const _NameChangeLine(this.title);
