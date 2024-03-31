@@ -45,7 +45,20 @@ class AudioController {
     _attachLifecycleNotifier(lifecycleNotifier);
     _attachSettings(settingsController);
   }
-
+  /////////////////////////////////////////////////
+ void stopMusic() {
+    _musicPlayer.pause(); // Pausing the music player
+  }
+  // playinh new song
+    void playNewSong(String filename) async {
+    try {
+      await _musicPlayer.stop();
+      await _musicPlayer.play(AssetSource('music/$filename'));
+    } catch (e) {
+      _log.severe('Could not play new song $filename', e);
+    }
+  }
+  ///////////////////////////////////////////
   void dispose() {
     _lifecycleNotifier?.removeListener(_handleAppLifecycle);
     _stopAllSound();
@@ -56,7 +69,7 @@ class AudioController {
   }
 
   void playSfx(SfxType type) {
-    final soundsOn = _settings?.soundsOn.value ?? false;
+    final soundsOn = _settings?.soundsOn.value ?? true;
     if (!soundsOn) {
       _log.fine(() =>
           'Ignoring playing sound ($type) because sounds are turned off.');

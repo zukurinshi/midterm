@@ -23,7 +23,7 @@ class MainMenuScreen extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
-                'assets/images/frontbg.jpg'), // Replace 'assets/background.jpg' with your image path
+                'assets/images/front1.jpg'), // Replace 'assets/background.jpg' with your image path
             fit: BoxFit.cover,
           ),
         ),
@@ -46,7 +46,7 @@ class MainMenuScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 150),
             ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStatePropertyAll(Colors.blueGrey)),
@@ -75,7 +75,7 @@ class MainMenuScreen extends StatelessWidget {
             
             SizedBox(height: 10),
             const Text(
-              'Developed by: Flor Ristagno',
+              'Developed by: MAD GROUP',
               style: TextStyle(
                   color: Colors
                       .white), // Adjust the text color to match your background

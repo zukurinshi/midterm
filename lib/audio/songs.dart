@@ -6,11 +6,8 @@ const Set<Song> songs = {
   // Filenames with whitespace break package:audioplayers on iOS
   // (as of February 2022), so we use no whitespace.
   // if you want to add song
-    // Song('ili.mp3', 'ILI ILI TULOG ANAY', artist: 'Flor Ristagno'),
-    Song('misty_cave.mp3', 'MISTY CAVE', artist: ''),
-    Song('nameless.mp3', 'NAMELESS', artist: ''),
-    Song('creepy_tower.mp3', 'OTHER WORLDLY BUDDY', artist: ''),
-    Song('after_dark.mp3', 'WANDERING DARKNESS', artist: ''),
+    Song('ili.mp3', 'ILI ILI TULOG ANAY', artist: 'Flor Ristagno'),
+    // Song('creepy_tower.mp3', 'OTHER WORLDLY BUDDY', artist: ''),
 
 
 };

@@ -20,7 +20,6 @@ class EndlessRunnerGame extends StatelessWidget {
     ]);
     final audioController = context.watch<AudioController>();
     final settingsController = context.watch<SettingsController>();
-
     return OrientationBuilder(
       builder: (context, orientation) {
    
@@ -50,6 +49,7 @@ class EndlessRunnerGame extends StatelessWidget {
                           backgroundColor:
                               MaterialStatePropertyAll(Colors.blueGrey)),
                       onPressed: () {
+audioController.stopMusic();
                         Navigator.push(context,
                             MaterialPageRoute(builder: (_) => MyHomePage(settingsController: settingsController)));
                       },
@@ -81,27 +81,7 @@ class EndlessRunnerGame extends StatelessWidget {
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 32),
-                      child: ValueListenableBuilder<bool>(
-                        valueListenable: settingsController.audioOn,
-                        builder: (context, audioOn, child) {
-                          return ElevatedButton.icon(
-                            onPressed: () => settingsController.toggleAudioOn(),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors
-                                  .blueGrey), 
-                     
-                            ),
-                            icon: Icon(
-                                audioOn ? Icons.volume_up : Icons.volume_off,color: Colors.white,),
-                             label: Text(
-                                ''),
-              
-                          );
-                        },
-                      ),
-                    ),
+                 
                   ],
                 ),
               ),

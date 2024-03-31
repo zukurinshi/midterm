@@ -8,7 +8,7 @@ import 'sprite.dart';
 
 List<Sprite> cacti = [
   Sprite()
-    ..imagePath = "assets/images/wolf4.gif"
+    ..imagePath = "assets/images/holy.png"
     ..imageWidth = 100
     ..imageHeight = 95,
 
