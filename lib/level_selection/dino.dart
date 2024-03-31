@@ -28,10 +28,6 @@ List<Sprite> dino = [
     ..imagePath = "assets/images/dino/death_1.png"
     ..imageWidth = 88
     ..imageHeight = 94,
-  Sprite()
-    ..imagePath = "assets/images/dino/dino_6.png"
-    ..imageWidth = 88
-    ..imageHeight = 94,
 ];
 
 List<Sprite> dinoNight = [
@@ -118,7 +114,7 @@ class Dino extends GameObject {
 
 void updateSpriteForScore1000() {
 
-    // Change the sprite to a new one when the score reaches 1000
+    // maging baboy pag 1000 pero 500 nilagy ko for debug hahah
     currentSprite = Sprite()
       ..imagePath = "assets/images/dino/pig.gif"
       ..imageWidth = 88

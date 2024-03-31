@@ -233,7 +233,6 @@ void _die() {
 
       lastUpdateCall = worldController.lastElapsedDuration!;
 
-      // Check if the score reaches 1000 and update Dino sprite
       if (runDistance >= 500) {
         setState(() {
           dino.updateSpriteForScore1000();
@@ -281,7 +280,7 @@ void _die() {
       body: Container(
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 800),
-        color: runDistance >= 1000 || (runDistance ~/ dayNightOffest) % 2 != 0
+        color: runDistance >= 500 || (runDistance ~/ dayNightOffest) % 2 != 0
               ?Color.fromARGB(255, 139, 0, 0)
               : Colors.black,
 
