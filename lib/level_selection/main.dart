@@ -380,40 +380,40 @@ class _MyHomePageState extends State<MyHomePage>
                                   actions: [
                                        Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                        height: 25,
-                                        width: 300,
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text("Jump Velocity:"),
-                                            SizedBox(
-                                              child: Container(
-                                                height: 150,
-                                                child: TextField(
-                                                  controller:
-                                                      jumpVelocityController,
-                                                  key: UniqueKey(),
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  decoration: InputDecoration(
-                                                    border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              height: 25,
-                                              width: 75,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      // child: SizedBox(
+                                      //   height: 25,
+                                      //   width: 300,
+                                      //   child: Row(
+                                      //     crossAxisAlignment:
+                                      //         CrossAxisAlignment.center,
+                                      //     mainAxisAlignment:
+                                      //         MainAxisAlignment.spaceBetween,
+                                      //     children: [
+                                      //       const Text("Jump Velocity:"),
+                                      //       SizedBox(
+                                      //         child: Container(
+                                      //           height: 150,
+                                      //           child: TextField(
+                                      //             controller:
+                                      //                 jumpVelocityController,
+                                      //             key: UniqueKey(),
+                                      //             keyboardType:
+                                      //                 TextInputType.number,
+                                      //             decoration: InputDecoration(
+                                      //               border: OutlineInputBorder(
+                                      //                 borderRadius:
+                                      //                     BorderRadius.circular(
+                                      //                         5),
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //         height: 25,
+                                      //         width: 75,
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
