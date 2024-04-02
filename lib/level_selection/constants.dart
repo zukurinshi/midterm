@@ -3,4 +3,4 @@ const int worlToPixelRatio = 10;
 double initialVelocity = 30;
 double acceleration = 1;
 int dayNightOffest = 500;
-double jumpVelocity = 1000;
+double jumpVelocity = 850;
